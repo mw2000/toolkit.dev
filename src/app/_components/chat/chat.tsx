@@ -77,8 +77,8 @@ export const ChatContent = ({
                 }}
                 exit={{ opacity: 0 }}
                 transition={{
-                  enter: { delay: 0.1, duration: 0.3 },
-                  exit: { delay: 0, duration: 0.05 },
+                  delay: 0.1,
+                  duration: 0.3,
                 }}
                 className="mb-4 flex flex-col items-center gap-2 pt-2 text-center md:mb-8 md:gap-4"
               >
@@ -131,8 +131,8 @@ export const ChatContent = ({
                 }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{
-                  enter: { delay: 0.4, duration: 0.3 },
-                  exit: { delay: 0, duration: 0.1 },
+                  delay: 0.4,
+                  duration: 0.3,
                 }}
                 className="mt-2 overflow-hidden md:mt-4"
               >
