@@ -22,7 +22,7 @@ const spotifyApiCall = async (accessToken: string, endpoint: string, params?: Re
 };
 
 export const spotifySearchTracksToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { q, type, limit, offset } = args as { q: string; type: "track"; limit: number; offset: number };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, '/search', {
@@ -37,7 +37,7 @@ export const spotifySearchTracksToolConfigServer = (accessToken: string) => ({
 });
 
 export const spotifySearchArtistsToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { q, type, limit, offset } = args as { q: string; type: "artist"; limit: number; offset: number };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, '/search', {
@@ -52,7 +52,7 @@ export const spotifySearchArtistsToolConfigServer = (accessToken: string) => ({
 });
 
 export const spotifySearchAlbumsToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { q, type, limit, offset } = args as { q: string; type: "album"; limit: number; offset: number };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, '/search', {
@@ -67,7 +67,7 @@ export const spotifySearchAlbumsToolConfigServer = (accessToken: string) => ({
 });
 
 export const spotifySearchPlaylistsToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { q, type, limit, offset } = args as { q: string; type: "playlist"; limit: number; offset: number };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, '/search', {
@@ -82,7 +82,7 @@ export const spotifySearchPlaylistsToolConfigServer = (accessToken: string) => (
 });
 
 export const spotifyGetPlaylistToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { playlist_id } = args as { playlist_id: string };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await spotifyApiCall(accessToken, `/playlists/${playlist_id}`);
@@ -90,7 +90,7 @@ export const spotifyGetPlaylistToolConfigServer = (accessToken: string) => ({
 });
 
 export const spotifyGetPlaylistTracksToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { playlist_id, limit, offset } = args as { playlist_id: string; limit: number; offset: number };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, `/playlists/${playlist_id}/tracks`, {
@@ -103,7 +103,7 @@ export const spotifyGetPlaylistTracksToolConfigServer = (accessToken: string) =>
 });
 
 export const spotifyGetArtistToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { artist_id } = args as { artist_id: string };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await spotifyApiCall(accessToken, `/artists/${artist_id}`);
@@ -111,7 +111,7 @@ export const spotifyGetArtistToolConfigServer = (accessToken: string) => ({
 });
 
 export const spotifyGetArtistTopTracksToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { artist_id, market } = args as { artist_id: string; market: string };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, `/artists/${artist_id}/top-tracks`, {
@@ -123,7 +123,7 @@ export const spotifyGetArtistTopTracksToolConfigServer = (accessToken: string) =
 });
 
 export const spotifyGetArtistAlbumsToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { artist_id, include_groups, limit, offset } = args as { artist_id: string; include_groups: string; limit: number; offset: number };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, `/artists/${artist_id}/albums`, {
@@ -137,7 +137,7 @@ export const spotifyGetArtistAlbumsToolConfigServer = (accessToken: string) => (
 });
 
 export const spotifyGetAlbumToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { album_id } = args as { album_id: string };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await spotifyApiCall(accessToken, `/albums/${album_id}`);
@@ -145,7 +145,7 @@ export const spotifyGetAlbumToolConfigServer = (accessToken: string) => ({
 });
 
 export const spotifyGetAlbumTracksToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { album_id, limit, offset } = args as { album_id: string; limit: number; offset: number };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, `/albums/${album_id}/tracks`, {
@@ -158,7 +158,7 @@ export const spotifyGetAlbumTracksToolConfigServer = (accessToken: string) => ({
 });
 
 export const spotifyGetTrackToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { track_id } = args as { track_id: string };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await spotifyApiCall(accessToken, `/tracks/${track_id}`);
@@ -166,14 +166,14 @@ export const spotifyGetTrackToolConfigServer = (accessToken: string) => ({
 });
 
 export const spotifyGetUserProfileToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (_args: Record<string, unknown>) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await spotifyApiCall(accessToken, '/me');
   },
 });
 
 export const spotifyGetUserPlaylistsToolConfigServer = (accessToken: string) => ({
-  callback: async (args: { [x: string]: any }) => {
+  callback: async (args: Record<string, unknown>) => {
     const { limit, offset } = args as { limit: number; offset: number };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await spotifyApiCall(accessToken, '/me/playlists', {

@@ -45,7 +45,7 @@ export const spotifyToolkitServer = createServerToolkit(
   async () => {
     const account = await api.accounts.getAccountByProvider("spotify");
 
-    if (!account || !account.access_token) {
+    if (!account?.access_token) {
       throw new Error("No Spotify account found or access token is missing");
     }
 
