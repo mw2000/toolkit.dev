@@ -1,3 +1,4 @@
-export { TrackCard } from "./track-card";
-export { ArtistCard } from "./artist-card";
-export { PlaylistCard } from "./playlist-card"; 
+export { TrackCard, type TrackData } from "./track-card";
+export { ArtistCard, type ArtistData } from "./artist-card";
+export { AlbumCard, type AlbumData } from "./album-card";
+export { PlaylistCard, type PlaylistData } from "./playlist-card"; 

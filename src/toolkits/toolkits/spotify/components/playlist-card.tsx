@@ -1,99 +1,85 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from "react";
+import { HStack, VStack } from "@/components/ui/stack";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Music, Users, Lock, Unlock } from "lucide-react";
-import Image from "next/image";
+import { ListMusic, ExternalLink, User } from "lucide-react";
+import Link from "next/link";
 
-interface PlaylistCardProps {
-  playlist: {
+export interface PlaylistData {
+  id: string;
+  name: string;
+  description: string | null;
+  owner: {
+    display_name: string;
     id: string;
-    name: string;
-    description: string | null;
-    owner: { id: string; display_name: string };
-    images: Array<{ url: string; width: number; height: number }>;
-    external_urls: { spotify: string };
-    tracks: { total: number };
-    public: boolean;
-    collaborative: boolean;
-    followers?: { total: number };
   };
+  tracks: {
+    total: number;
+  };
+  images: Array<{ url: string; width: number; height: number }>;
+  external_urls: { spotify: string };
+  public: boolean;
 }
 
-export function PlaylistCard({ playlist }: PlaylistCardProps) {
-  const playlistImage = playlist.images[0]?.url ?? '/placeholder-playlist.png';
+interface PlaylistCardProps {
+  playlist: PlaylistData;
+}
+
+export const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
+  const playlistImage = playlist.images[0]?.url;
 
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold truncate">
+    <HStack className="group w-full cursor-pointer items-center border-b py-3 last:border-b-0 last:pb-0">
+      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-md">
+        {playlistImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={playlistImage}
+            alt={`${playlist.name} playlist cover`}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="bg-muted flex h-full w-full items-center justify-center rounded-md">
+            <ListMusic className="text-muted-foreground size-5" />
+          </div>
+        )}
+      </div>
+      
+      <VStack className="flex w-full items-start gap-1">
+        <HStack className="items-center gap-2">
+          <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
             {playlist.name}
-          </CardTitle>
-          <a
+          </h3>
+          <Link
             href={playlist.external_urls.spotify}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary"
+            className="text-muted-foreground hover:text-primary opacity-0 transition-opacity group-hover:opacity-100"
           >
-            <ExternalLink className="h-4 w-4" />
-          </a>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex items-center space-x-3">
-          <Image
-            src={playlistImage}
-            alt={playlist.name}
-            className="w-16 h-16 rounded-md object-cover"
-          />
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">
-              by {playlist.owner.display_name}
-            </p>
-            {playlist.description && (
-              <p className="text-xs text-muted-foreground line-clamp-2">
-                {playlist.description}
-              </p>
-            )}
-          </div>
-        </div>
+            <ExternalLink className="size-3" />
+          </Link>
+        </HStack>
         
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <div className="flex items-center space-x-1">
-            <Music className="h-3 w-3" />
-            <span>{playlist.tracks.total} tracks</span>
-          </div>
-          {playlist.followers && (
-            <div className="flex items-center space-x-1">
-              <Users className="h-3 w-3" />
-              <span>{playlist.followers.total} followers</span>
-            </div>
-          )}
-        </div>
+        {playlist.description && (
+          <p className="text-muted-foreground line-clamp-2 text-sm">
+            {playlist.description}
+          </p>
+        )}
         
-        <div className="flex flex-wrap gap-1">
-          <Badge variant="secondary" className="text-xs">
-            Playlist
-          </Badge>
+        <HStack className="items-center gap-2">
+          <User className="text-muted-foreground size-3" />
+          <p className="text-muted-foreground text-sm">
+            {playlist.owner.display_name}
+          </p>
+          <span className="text-muted-foreground">•</span>
           <Badge variant="outline" className="text-xs">
-            {playlist.public ? (
-              <div className="flex items-center space-x-1">
-                <Unlock className="h-3 w-3" />
-                <span>Public</span>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-1">
-                <Lock className="h-3 w-3" />
-                <span>Private</span>
-              </div>
-            )}
+            {playlist.tracks.total} track{playlist.tracks.total !== 1 ? "s" : ""}
           </Badge>
-          {playlist.collaborative && (
-            <Badge variant="outline" className="text-xs">
-              Collaborative
-            </Badge>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+          <span className="text-muted-foreground">•</span>
+          <Badge variant={playlist.public ? "secondary" : "outline"} className="text-xs">
+            {playlist.public ? "Public" : "Private"}
+          </Badge>
+        </HStack>
+      </VStack>
+    </HStack>
   );
-} 
+}; 

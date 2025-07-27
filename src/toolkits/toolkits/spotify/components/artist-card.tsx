@@ -1,21 +1,24 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from "react";
+import { HStack, VStack } from "@/components/ui/stack";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Users, Music } from "lucide-react";
-import Image from "next/image";
+import { User, ExternalLink, Users } from "lucide-react";
+import Link from "next/link";
 
-interface ArtistCardProps {
-  artist: {
-    id: string;
-    name: string;
-    genres: string[];
-    popularity: number;
-    images: Array<{ url: string; width: number; height: number }>;
-    external_urls: { spotify: string };
-    followers: { total: number };
-  };
+export interface ArtistData {
+  id: string;
+  name: string;
+  genres: string[];
+  popularity: number;
+  images: Array<{ url: string; width: number; height: number }>;
+  external_urls: { spotify: string };
+  followers: { total: number };
 }
 
-export function ArtistCard({ artist }: ArtistCardProps) {
+interface ArtistCardProps {
+  artist: ArtistData;
+}
+
+export const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
   const formatFollowers = (count: number) => {
     if (count >= 1000000) {
       return `${(count / 1000000).toFixed(1)}M`;
@@ -25,50 +28,59 @@ export function ArtistCard({ artist }: ArtistCardProps) {
     return count.toString();
   };
 
-  const artistImage = artist.images[0]?.url ?? '/placeholder-artist.png';
+  const artistImage = artist.images[0]?.url;
 
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold truncate">
+    <HStack className="group w-full cursor-pointer items-center border-b py-3 last:border-b-0 last:pb-0">
+      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full">
+        {artistImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={artistImage}
+            alt={`${artist.name} profile`}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="bg-muted flex h-full w-full items-center justify-center rounded-full">
+            <User className="text-muted-foreground size-5" />
+          </div>
+        )}
+      </div>
+      
+      <VStack className="flex w-full items-start gap-1">
+        <HStack className="items-center gap-2">
+          <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
             {artist.name}
-          </CardTitle>
-          <a
+          </h3>
+          <Link
             href={artist.external_urls.spotify}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary"
+            className="text-muted-foreground hover:text-primary opacity-0 transition-opacity group-hover:opacity-100"
           >
-            <ExternalLink className="h-4 w-4" />
-          </a>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex items-center space-x-3">
-          <Image
-            src={artistImage}
-            alt={artist.name}
-            className="w-16 h-16 rounded-full object-cover"
-          />
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-              <div className="flex items-center space-x-1">
-                <Users className="h-3 w-3" />
-                <span>{formatFollowers(artist.followers.total)} followers</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Music className="h-3 w-3" />
-                <span>{artist.popularity}% popularity</span>
-              </div>
-            </div>
-          </div>
-        </div>
+            <ExternalLink className="size-3" />
+          </Link>
+        </HStack>
+        
+        <HStack className="items-center gap-2">
+          <Users className="text-muted-foreground size-3" />
+          <p className="text-muted-foreground text-sm">
+            {formatFollowers(artist.followers.total)} followers
+          </p>
+          {artist.popularity > 0 && (
+            <>
+              <span className="text-muted-foreground">•</span>
+              <Badge variant="secondary" className="text-xs">
+                {artist.popularity}% popular
+              </Badge>
+            </>
+          )}
+        </HStack>
         
         {artist.genres.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {artist.genres.slice(0, 3).map((genre, index) => (
-              <Badge key={index} variant="secondary" className="text-xs">
+              <Badge key={index} variant="outline" className="text-xs">
                 {genre}
               </Badge>
             ))}
@@ -79,18 +91,7 @@ export function ArtistCard({ artist }: ArtistCardProps) {
             )}
           </div>
         )}
-        
-        <div className="flex flex-wrap gap-1">
-          <Badge variant="secondary" className="text-xs">
-            Artist
-          </Badge>
-          <Badge variant="outline" className="text-xs">
-            {artist.popularity >= 80 ? 'Very Popular' : 
-             artist.popularity >= 60 ? 'Popular' : 
-             artist.popularity >= 40 ? 'Moderate' : 'Emerging'}
-          </Badge>
-        </div>
-      </CardContent>
-    </Card>
+      </VStack>
+    </HStack>
   );
-} 
+}; 
