@@ -43,27 +43,32 @@ export const spotifyToolkitServer = createServerToolkit(
 - For playlist analysis, get playlist details then explore individual tracks
 - Use market codes (e.g., 'US', 'GB') for region-specific content`,
   async () => {
-    const account = await api.accounts.getAccountByProvider("spotify");
+    try {
+      const account = await api.accounts.getAccountByProvider("spotify");
 
-    if (!account?.access_token) {
-      throw new Error("No Spotify account found or access token is missing");
+      if (!account?.access_token) {
+        throw new Error("No Spotify account found or access token is missing. Please connect your Spotify account first.");
+      }
+
+      return {
+        [SpotifyTools.SearchTracks]: spotifySearchTracksToolConfigServer(account.access_token),
+        [SpotifyTools.SearchArtists]: spotifySearchArtistsToolConfigServer(account.access_token),
+        [SpotifyTools.SearchAlbums]: spotifySearchAlbumsToolConfigServer(account.access_token),
+        [SpotifyTools.SearchPlaylists]: spotifySearchPlaylistsToolConfigServer(account.access_token),
+        [SpotifyTools.GetPlaylist]: spotifyGetPlaylistToolConfigServer(account.access_token),
+        [SpotifyTools.GetArtist]: spotifyGetArtistToolConfigServer(account.access_token),
+        [SpotifyTools.GetAlbum]: spotifyGetAlbumToolConfigServer(account.access_token),
+        [SpotifyTools.GetTrack]: spotifyGetTrackToolConfigServer(account.access_token),
+        [SpotifyTools.GetUserProfile]: spotifyGetUserProfileToolConfigServer(account.access_token),
+        [SpotifyTools.GetUserPlaylists]: spotifyGetUserPlaylistsToolConfigServer(account.access_token),
+        [SpotifyTools.GetArtistTopTracks]: spotifyGetArtistTopTracksToolConfigServer(account.access_token),
+        [SpotifyTools.GetArtistAlbums]: spotifyGetArtistAlbumsToolConfigServer(account.access_token),
+        [SpotifyTools.GetAlbumTracks]: spotifyGetAlbumTracksToolConfigServer(account.access_token),
+        [SpotifyTools.GetPlaylistTracks]: spotifyGetPlaylistTracksToolConfigServer(account.access_token),
+      };
+    } catch (error) {
+      console.error('Spotify toolkit initialization error:', error);
+      throw new Error(`Failed to initialize Spotify toolkit: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    return {
-      [SpotifyTools.SearchTracks]: spotifySearchTracksToolConfigServer(account.access_token),
-      [SpotifyTools.SearchArtists]: spotifySearchArtistsToolConfigServer(account.access_token),
-      [SpotifyTools.SearchAlbums]: spotifySearchAlbumsToolConfigServer(account.access_token),
-      [SpotifyTools.SearchPlaylists]: spotifySearchPlaylistsToolConfigServer(account.access_token),
-      [SpotifyTools.GetPlaylist]: spotifyGetPlaylistToolConfigServer(account.access_token),
-      [SpotifyTools.GetArtist]: spotifyGetArtistToolConfigServer(account.access_token),
-      [SpotifyTools.GetAlbum]: spotifyGetAlbumToolConfigServer(account.access_token),
-      [SpotifyTools.GetTrack]: spotifyGetTrackToolConfigServer(account.access_token),
-      [SpotifyTools.GetUserProfile]: spotifyGetUserProfileToolConfigServer(account.access_token),
-      [SpotifyTools.GetUserPlaylists]: spotifyGetUserPlaylistsToolConfigServer(account.access_token),
-      [SpotifyTools.GetArtistTopTracks]: spotifyGetArtistTopTracksToolConfigServer(account.access_token),
-      [SpotifyTools.GetArtistAlbums]: spotifyGetArtistAlbumsToolConfigServer(account.access_token),
-      [SpotifyTools.GetAlbumTracks]: spotifyGetAlbumTracksToolConfigServer(account.access_token),
-      [SpotifyTools.GetPlaylistTracks]: spotifyGetPlaylistTracksToolConfigServer(account.access_token),
-    };
   },
 ); 

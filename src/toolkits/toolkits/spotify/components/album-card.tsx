@@ -20,6 +20,10 @@ interface AlbumCardProps {
 }
 
 export const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
+  if (!album) {
+    return null;
+  }
+
   const formatReleaseDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -29,8 +33,8 @@ export const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
     });
   };
 
-  const artistNames = album.artists.map(artist => artist.name).join(", ");
-  const albumImage = album.images[0]?.url;
+  const artistNames = album.artists?.map(artist => artist.name).join(", ") ?? "Unknown Artist";
+  const albumImage = album.images?.[0]?.url;
 
   return (
     <HStack className="group w-full cursor-pointer items-center border-b py-3 last:border-b-0 last:pb-0">

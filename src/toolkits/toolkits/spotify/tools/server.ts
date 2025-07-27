@@ -6,6 +6,8 @@ const spotifyApiCall = async (accessToken: string, endpoint: string, params?: Re
     });
   }
 
+  console.log('Spotify API call:', { endpoint, params, url: url.toString() });
+
   const response = await fetch(url.toString(), {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
@@ -14,7 +16,9 @@ const spotifyApiCall = async (accessToken: string, endpoint: string, params?: Re
   });
 
   if (!response.ok) {
-    throw new Error(`Spotify API error: ${response.status} ${response.statusText}`);
+    const errorText = await response.text().catch(() => 'Unknown error');
+    console.error('Spotify API error:', { status: response.status, statusText: response.statusText, errorText });
+    throw new Error(`Spotify API error: ${response.status} ${response.statusText} - ${errorText}`);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -23,61 +27,82 @@ const spotifyApiCall = async (accessToken: string, endpoint: string, params?: Re
 
 export const spotifySearchTracksToolConfigServer = (accessToken: string) => ({
   callback: async (args: Record<string, unknown>) => {
-    const { q, type, limit, offset } = args as { q: string; type: "track"; limit: number; offset: number };
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const result = await spotifyApiCall(accessToken, '/search', {
-      q,
-      type,
-      limit: limit.toString(),
-      offset: offset.toString(),
-    });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-    return { tracks: (result).tracks?.items ?? [] };
+    try {
+      const { q, type, limit, offset } = args as { q: string; type: "track"; limit: number; offset: number };
+      console.log('Spotify search tracks:', { q, type, limit, offset });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const result = await spotifyApiCall(accessToken, '/search', {
+        q,
+        type,
+        limit: limit.toString(),
+        offset: offset.toString(),
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+      return { tracks: (result).tracks?.items ?? [] };
+    } catch (error) {
+      console.error('Spotify search tracks error:', error);
+      return { tracks: [] };
+    }
   },
 });
 
 export const spotifySearchArtistsToolConfigServer = (accessToken: string) => ({
   callback: async (args: Record<string, unknown>) => {
-    const { q, type, limit, offset } = args as { q: string; type: "artist"; limit: number; offset: number };
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const result = await spotifyApiCall(accessToken, '/search', {
-      q,
-      type,
-      limit: limit.toString(),
-      offset: offset.toString(),
-    });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-    return { artists: (result).artists?.items ?? [] };
+    try {
+      const { q, type, limit, offset } = args as { q: string; type: "artist"; limit: number; offset: number };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const result = await spotifyApiCall(accessToken, '/search', {
+        q,
+        type,
+        limit: limit.toString(),
+        offset: offset.toString(),
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+      return { artists: (result).artists?.items ?? [] };
+    } catch (error) {
+      console.error('Spotify search artists error:', error);
+      return { artists: [] };
+    }
   },
 });
 
 export const spotifySearchAlbumsToolConfigServer = (accessToken: string) => ({
   callback: async (args: Record<string, unknown>) => {
-    const { q, type, limit, offset } = args as { q: string; type: "album"; limit: number; offset: number };
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const result = await spotifyApiCall(accessToken, '/search', {
-      q,
-      type,
-      limit: limit.toString(),
-      offset: offset.toString(),
-    });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-    return { albums: (result).albums?.items ?? [] };
+    try {
+      const { q, type, limit, offset } = args as { q: string; type: "album"; limit: number; offset: number };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const result = await spotifyApiCall(accessToken, '/search', {
+        q,
+        type,
+        limit: limit.toString(),
+        offset: offset.toString(),
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+      return { albums: (result).albums?.items ?? [] };
+    } catch (error) {
+      console.error('Spotify search albums error:', error);
+      return { albums: [] };
+    }
   },
 });
 
 export const spotifySearchPlaylistsToolConfigServer = (accessToken: string) => ({
   callback: async (args: Record<string, unknown>) => {
-    const { q, type, limit, offset } = args as { q: string; type: "playlist"; limit: number; offset: number };
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const result = await spotifyApiCall(accessToken, '/search', {
-      q,
-      type,
-      limit: limit.toString(),
-      offset: offset.toString(),
-    });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-    return { playlists: (result).playlists?.items ?? [] };
+    try {
+      const { q, type, limit, offset } = args as { q: string; type: "playlist"; limit: number; offset: number };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const result = await spotifyApiCall(accessToken, '/search', {
+        q,
+        type,
+        limit: limit.toString(),
+        offset: offset.toString(),
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+      return { playlists: (result).playlists?.items ?? [] };
+    } catch (error) {
+      console.error('Spotify search playlists error:', error);
+      return { playlists: [] };
+    }
   },
 });
 

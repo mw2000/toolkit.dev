@@ -25,7 +25,11 @@ interface PlaylistCardProps {
 }
 
 export const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlist }) => {
-  const playlistImage = playlist.images[0]?.url;
+  if (!playlist) {
+    return null;
+  }
+
+  const playlistImage = playlist.images?.[0]?.url;
 
   return (
     <HStack className="group w-full cursor-pointer items-center border-b py-3 last:border-b-0 last:pb-0">

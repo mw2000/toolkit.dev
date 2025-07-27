@@ -19,6 +19,10 @@ interface ArtistCardProps {
 }
 
 export const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
+  if (!artist) {
+    return null;
+  }
+
   const formatFollowers = (count: number) => {
     if (count >= 1000000) {
       return `${(count / 1000000).toFixed(1)}M`;
@@ -28,7 +32,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
     return count.toString();
   };
 
-  const artistImage = artist.images[0]?.url;
+  const artistImage = artist.images?.[0]?.url;
 
   return (
     <HStack className="group w-full cursor-pointer items-center border-b py-3 last:border-b-0 last:pb-0">

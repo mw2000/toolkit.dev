@@ -25,14 +25,18 @@ interface TrackCardProps {
 }
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
+  if (!track) {
+    return null;
+  }
+
   const formatDuration = (ms: number) => {
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  const artistNames = track.artists.map(artist => artist.name).join(", ");
-  const albumImage = track.album?.images[0]?.url;
+  const artistNames = track.artists?.map(artist => artist.name).join(", ") ?? "Unknown Artist";
+  const albumImage = track.album?.images?.[0]?.url;
 
   return (
     <HStack className="group w-full cursor-pointer items-center border-b py-3 last:border-b-0 last:pb-0">

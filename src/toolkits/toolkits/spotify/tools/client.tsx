@@ -23,7 +23,7 @@ export const spotifySearchTracksToolConfigClient = createClientTool(searchTracks
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.tracks.length) {
+    if (!result?.tracks?.length) {
       return <div className="text-muted-foreground">No tracks found</div>;
     }
 
@@ -34,7 +34,7 @@ export const spotifySearchTracksToolConfigClient = createClientTool(searchTracks
         </h3>
         <div className="flex w-full flex-col">
           {result.tracks.map((track) => (
-            <TrackCard key={track.id} track={track} />
+            <TrackCard key={track?.id ?? Math.random()} track={track} />
           ))}
         </div>
       </VStack>
@@ -56,7 +56,7 @@ export const spotifySearchArtistsToolConfigClient = createClientTool(searchArtis
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.artists.length) {
+    if (!result?.artists?.length) {
       return <div className="text-muted-foreground">No artists found</div>;
     }
 
@@ -67,7 +67,7 @@ export const spotifySearchArtistsToolConfigClient = createClientTool(searchArtis
         </h3>
         <div className="flex w-full flex-col">
           {result.artists.map((artist) => (
-            <ArtistCard key={artist.id} artist={artist} />
+            <ArtistCard key={artist?.id ?? Math.random()} artist={artist} />
           ))}
         </div>
       </VStack>
@@ -89,7 +89,7 @@ export const spotifySearchAlbumsToolConfigClient = createClientTool(searchAlbums
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.albums.length) {
+    if (!result?.albums?.length) {
       return <div className="text-muted-foreground">No albums found</div>;
     }
 
@@ -100,7 +100,7 @@ export const spotifySearchAlbumsToolConfigClient = createClientTool(searchAlbums
         </h3>
         <div className="flex w-full flex-col">
           {result.albums.map((album) => (
-            <AlbumCard key={album.id} album={album} />
+            <AlbumCard key={album?.id ?? Math.random()} album={album} />
           ))}
         </div>
       </VStack>
@@ -122,7 +122,7 @@ export const spotifySearchPlaylistsToolConfigClient = createClientTool(searchPla
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.playlists.length) {
+    if (!result?.playlists?.length) {
       return <div className="text-muted-foreground">No playlists found</div>;
     }
 
@@ -133,7 +133,7 @@ export const spotifySearchPlaylistsToolConfigClient = createClientTool(searchPla
         </h3>
         <div className="flex w-full flex-col">
           {result.playlists.map((playlist) => (
-            <PlaylistCard key={playlist.id} playlist={playlist} />
+            <PlaylistCard key={playlist?.id ?? Math.random()} playlist={playlist} />
           ))}
         </div>
       </VStack>
@@ -155,6 +155,9 @@ export const spotifyGetPlaylistToolConfigClient = createClientTool(getPlaylistTo
     </HStack>
   ),
   ResultComponent: ({ result }) => {
+    if (!result) {
+      return <div className="text-muted-foreground">No playlist found</div>;
+    }
     return <PlaylistCard playlist={result} />;
   },
 });
@@ -173,7 +176,7 @@ export const spotifyGetPlaylistTracksToolConfigClient = createClientTool(getPlay
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.tracks.length) {
+    if (!result?.tracks?.length) {
       return <div className="text-muted-foreground">No tracks found in playlist</div>;
     }
 
@@ -184,7 +187,7 @@ export const spotifyGetPlaylistTracksToolConfigClient = createClientTool(getPlay
         </h3>
         <div className="flex w-full flex-col">
           {result.tracks.map((item, index) => (
-            <TrackCard key={item.track?.id ?? index} track={item.track} />
+            <TrackCard key={item?.track?.id ?? index} track={item?.track} />
           ))}
         </div>
       </VStack>
@@ -206,6 +209,9 @@ export const spotifyGetArtistToolConfigClient = createClientTool(getArtistTool, 
     </HStack>
   ),
   ResultComponent: ({ result }) => {
+    if (!result) {
+      return <div className="text-muted-foreground">No artist found</div>;
+    }
     return <ArtistCard artist={result} />;
   },
 });
@@ -224,7 +230,7 @@ export const spotifyGetArtistTopTracksToolConfigClient = createClientTool(getArt
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.tracks.length) {
+    if (!result?.tracks?.length) {
       return <div className="text-muted-foreground">No top tracks found</div>;
     }
 
@@ -235,7 +241,7 @@ export const spotifyGetArtistTopTracksToolConfigClient = createClientTool(getArt
         </h3>
         <div className="flex w-full flex-col">
           {result.tracks.map((track) => (
-            <TrackCard key={track.id} track={track} />
+            <TrackCard key={track?.id ?? Math.random()} track={track} />
           ))}
         </div>
       </VStack>
@@ -257,7 +263,7 @@ export const spotifyGetArtistAlbumsToolConfigClient = createClientTool(getArtist
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.albums.length) {
+    if (!result?.albums?.length) {
       return <div className="text-muted-foreground">No albums found</div>;
     }
 
@@ -268,7 +274,7 @@ export const spotifyGetArtistAlbumsToolConfigClient = createClientTool(getArtist
         </h3>
         <div className="flex w-full flex-col">
           {result.albums.map((album) => (
-            <AlbumCard key={album.id} album={album} />
+            <AlbumCard key={album?.id ?? Math.random()} album={album} />
           ))}
         </div>
       </VStack>
@@ -290,6 +296,9 @@ export const spotifyGetAlbumToolConfigClient = createClientTool(getAlbumTool, {
     </HStack>
   ),
   ResultComponent: ({ result }) => {
+    if (!result) {
+      return <div className="text-muted-foreground">No album found</div>;
+    }
     return <AlbumCard album={result} />;
   },
 });
@@ -308,7 +317,7 @@ export const spotifyGetAlbumTracksToolConfigClient = createClientTool(getAlbumTr
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.tracks.length) {
+    if (!result?.tracks?.length) {
       return <div className="text-muted-foreground">No tracks found in album</div>;
     }
 
@@ -319,7 +328,7 @@ export const spotifyGetAlbumTracksToolConfigClient = createClientTool(getAlbumTr
         </h3>
         <div className="flex w-full flex-col">
           {result.tracks.map((track) => (
-            <TrackCard key={track.id} track={track} />
+            <TrackCard key={track?.id ?? Math.random()} track={track} />
           ))}
         </div>
       </VStack>
@@ -341,6 +350,9 @@ export const spotifyGetTrackToolConfigClient = createClientTool(getTrackTool, {
     </HStack>
   ),
   ResultComponent: ({ result }) => {
+    if (!result) {
+      return <div className="text-muted-foreground">No track found</div>;
+    }
     return <TrackCard track={result} />;
   },
 });
@@ -359,15 +371,19 @@ export const spotifyGetUserProfileToolConfigClient = createClientTool(getUserPro
     </HStack>
   ),
   ResultComponent: ({ result }) => {
+    if (!result) {
+      return <div className="text-muted-foreground">No user profile found</div>;
+    }
+
     return (
       <VStack className="items-start gap-2">
         <h3 className="text-muted-foreground text-sm font-medium">User Profile</h3>
         <div className="flex items-center gap-3">
-          {result.images?.[0]?.url ? (
+          {result?.images?.[0]?.url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={result.images[0].url}
-              alt={result.display_name}
+              alt={result.display_name ?? "User"}
               className="h-12 w-12 rounded-full"
             />
           ) : (
@@ -376,9 +392,9 @@ export const spotifyGetUserProfileToolConfigClient = createClientTool(getUserPro
             </div>
           )}
           <VStack className="items-start gap-1">
-            <h4 className="font-medium">{result.display_name}</h4>
-            <p className="text-muted-foreground text-sm">{result.email}</p>
-            <p className="text-muted-foreground text-sm">ID: {result.id}</p>
+            <h4 className="font-medium">{result?.display_name ?? "Unknown User"}</h4>
+            <p className="text-muted-foreground text-sm">{result?.email ?? "No email"}</p>
+            <p className="text-muted-foreground text-sm">ID: {result?.id ?? "Unknown"}</p>
           </VStack>
         </div>
       </VStack>
@@ -400,7 +416,7 @@ export const spotifyGetUserPlaylistsToolConfigClient = createClientTool(getUserP
     </HStack>
   ),
   ResultComponent: ({ result }) => {
-    if (!result.playlists.length) {
+    if (!result?.playlists?.length) {
       return <div className="text-muted-foreground">No playlists found</div>;
     }
 
@@ -411,7 +427,7 @@ export const spotifyGetUserPlaylistsToolConfigClient = createClientTool(getUserP
         </h3>
         <div className="flex w-full flex-col">
           {result.playlists.map((playlist) => (
-            <PlaylistCard key={playlist.id} playlist={playlist} />
+            <PlaylistCard key={playlist?.id ?? Math.random()} playlist={playlist} />
           ))}
         </div>
       </VStack>
