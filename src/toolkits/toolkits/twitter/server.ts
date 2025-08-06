@@ -6,6 +6,7 @@ import {
 } from "./tools/server";
 import { TwitterTools } from "./tools";
 import { env } from "@/env";
+import { TwitterApi } from "twitter-api-v2";
 
 export const twitterToolkitServer = createServerToolkit(
   baseTwitterToolkitConfig,
@@ -34,14 +35,17 @@ export const twitterToolkitServer = createServerToolkit(
       );
     }
 
+    const client = new TwitterApi({
+      clientId,
+      clientSecret,
+    });
+
     return {
       [TwitterTools.GetUserProfile]: getUserProfileToolConfigServer(
-        clientId,
-        clientSecret,
+        client,
       ),
       [TwitterTools.GetLatestTweets]: getLatestTweetsToolConfigServer(
-        clientId,
-        clientSecret,
+        client,
       ),
     };
   },
